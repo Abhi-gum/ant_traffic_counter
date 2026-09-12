@@ -1,0 +1,81 @@
+# =========================
+# Python
+# =========================
+__pycache__/
+*.py[cod]
+*.pyo
+
+# Virtual environment
+venv/
+.venv/
+env/
+ENV/
+
+# =========================
+# Large video files
+# =========================
+*.mp4
+*.avi
+*.mov
+*.mkv
+
+# =========================
+# YOLO / Roboflow datasets
+# =========================
+runs/
+weights/
+*.pt
+*.onnx
+
+# Dataset images
+Ant Traffic.v1i.yolov11/train/images/
+Ant Traffic.v1i.yolov11/valid/images/
+Ant Traffic.v1i.yolov11/test/images/
+
+# Dataset cache
+*.cache
+
+# =========================
+# Output videos
+# =========================
+*_result.mp4
+*_output.mp4
+results/
+outputs/
+
+# =========================
+# IDE
+# =========================
+.vscode/
+.idea/
+
+# =========================
+# OS files
+# =========================
+.DS_Store
+Thumbs.db
+
+# =========================
+# Python environment files
+# =========================
+.env
+
+# =========================
+# Jupyter
+# =========================
+.ipynb_checkpoints/
+
+# Extracted dataset frames
+dataset/images/
+
+# Video files
+video/*.mp4
+video/*.avi
+video/*.mov
+video/*.mkv
+
+# Large input/output videos
+*.mp4
+*.avi
+*.mov
+*.mkv

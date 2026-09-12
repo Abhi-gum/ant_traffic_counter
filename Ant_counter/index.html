@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Ant-Traffic | AI Ant Traffic Monitoring</title>
+
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+    <!-- NAVBAR -->
+    <nav class="navbar">
+
+        <div class="logo">
+            🐜 <span>ANT-TRAFFIC</span>
+        </div>
+
+        <div class="nav-links">
+            <a href="#home">Home</a>
+            <a href="#how-it-works">How It Works</a>
+            <a href="#about">About</a>
+        </div>
+
+        <button class="nav-button" onclick="startCounting()">
+            🐜 Start Counting
+        </button>
+
+    </nav>
+
+
+    <!-- HERO SECTION -->
+    <section class="hero" id="home">
+
+        <div class="hero-text">
+
+            <div class="tag">
+                🐜 Because even ants have traffic.
+            </div>
+
+            <h1>
+                How busy is the road...
+                <span>for ants?</span>
+            </h1>
+
+            <p>
+                AI-powered computer vision for monitoring,
+                counting and analyzing ant traffic.
+            </p>
+
+            <p class="funny">
+                Built with AI. Solving absolutely nothing. 🐜
+            </p>
+
+            <div class="hero-buttons">
+
+                <button onclick="startCounting()" class="primary-button">
+                    🐜 Start Counting →
+                </button>
+
+                <button onclick="scrollToHow()" class="secondary-button">
+                    ▶ How It Works
+                </button>
+
+            </div>
+
+        </div>
+
+
+        <!-- HERO VISUAL -->
+        <div class="hero-visual">
+
+            <div class="road">
+
+                <div class="road-line"></div>
+
+                <div class="ant ant1">🐜</div>
+                <div class="ant ant2">🐜</div>
+                <div class="ant ant3">🐜</div>
+                <div class="ant ant4">🐜</div>
+
+            </div>
+
+            <div class="detection-box">
+                <span>ant</span>
+                <strong>0.97</strong>
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- ============================= -->
+    <!-- VIDEO UPLOAD + PREDICTION -->
+    <!-- ============================= -->
+
+    <section id="prediction" class="prediction-section">
+
+        <h2>🐜 Ant Detection</h2>
+
+        <p>
+            Upload your ant video and run the detection.
+        </p>
+
+        <input
+            type="file"
+            id="videoInput"
+            accept="video/*"
+        >
+
+        <br><br>
+
+        <button onclick="uploadVideo()" class="primary-button">
+            Detect Ants
+        </button>
+
+        <p id="status"></p>
+
+        <!-- PREDICTION VIDEO -->
+
+        <video
+            id="predictionVideo"
+            controls
+            width="700"
+            style="display:none;"
+        ></video>
+
+        <!-- ANT COUNT -->
+
+        <h2 id="count">
+            Ants Counted: 0
+        </h2>
+
+    </section>
+
+
+    <!-- HOW IT WORKS -->
+    <section class="how" id="how-it-works">
+
+        <div class="section-title">
+
+            <h2>How Does It Work?</h2>
+
+            <p>
+                From a video to meaningful
+                (and slightly useless) insights.
+            </p>
+
+        </div>
+
+
+        <div class="steps">
+
+            <div class="step">
+
+                <div class="step-icon">🎥</div>
+
+                <h3>Upload Video</h3>
+
+                <p>
+                    Add your ant video to the system.
+                </p>
+
+            </div>
+
+
+            <div class="arrow">→</div>
+
+
+            <div class="step">
+
+                <div class="step-icon">🧠</div>
+
+                <h3>AI Detects</h3>
+
+                <p>
+                    Our AI detects and tracks the ants.
+                </p>
+
+            </div>
+
+
+            <div class="arrow">→</div>

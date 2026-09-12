@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Ant Traffic Analyzer 🐜</title>
+
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+    <!-- NAVBAR -->
+    <nav class="navbar">
+        <div class="logo">🐜 ANT-TRAFFIC</div>
+
+        <a href="index.html" class="nav-link">
+            ← Home
+        </a>
+    </nav>
+
+
+    <!-- ANALYZER -->
+    <section class="analyzer">
+
+        <div class="analyzer-header">
+            <span class="badge">🐜 AI TRAFFIC ANALYZER</span>
+
+            <h1>
+                Let's Count Some Ants.
+            </h1>
+
+            <p>
+                Upload a video and let our extremely sophisticated
+                technology answer an extremely important question.
+            </p>
+        </div>
+
+
+        <!-- UPLOAD BOX -->
+        <div class="upload-card">
+
+            <div class="upload-icon">
+                🎥
+            </div>
+
+            <h2>Upload Ant Traffic Video</h2>
+
+            <p>
+                Upload a video of ants moving across a fixed checkpoint.
+            </p>
+
+            <input
+                type="file"
+                id="videoInput"
+                accept="video/*"
+                hidden
+            >
+
+            <button
+                class="primary-btn"
+                onclick="document.getElementById('videoInput').click()"
+            >
+                📁 Choose Video
+            </button>
+
+            <p id="fileName" class="file-name">
+                No video selected
+            </p>
+
+        </div>
+
+
+        <!-- VIDEO PREVIEW -->
+
+        <div class="video-section" id="videoSection">
+
+            <h2>🎬 Video Preview</h2>
+
+            <video
+                id="videoPreview"
+                controls
+            ></video>
+
+            <button
+                class="analyze-btn"
+                onclick="analyzeVideo()"
+            >
+                🐜 Analyze Ant Traffic
+            </button>
+
+        </div>
+
+
+        <!-- ANALYSIS STATUS -->
+
+        <div class="analysis-card" id="analysisCard">
+
+            <div class="loading-ant">
+                🐜
+            </div>
+
+            <h2 id="analysisTitle">
+                Analyzing Ant Traffic...
+            </h2>
+
+            <p id="analysisText">
+                Please wait while our AI counts extremely tiny commuters.
+            </p>
+
+            <div class="progress-container">
+                <div
+                    class="progress-bar"
+                    id="progressBar"
+                ></div>
+            </div>
+
+            <p id="progressText">
+                0%
+            </p>
+
+        </div>
+
+
+        <!-- RESULTS -->
+
+        <div class="results" id="results">
+
+            <div class="results-header">
+                <span class="badge">ANALYSIS COMPLETE</span>
+
+                <h2>
+                    🐜 Ant Traffic Report
+                </h2>
+            </div>
+
+
+            <div class="stats-grid">
+
+                <div class="result-box">
+                    <span>🐜</span>
+                    <h3 id="antCount">127</h3>
+                    <p>Ants Detected</p>
+                </div>
+
+
+                <div class="result-box">
+                    <span>⏱️</span>
+                    <h3>10 min</h3>
+                    <p>Observation Time</p>
+                </div>
+
+
+                <div class="result-box">
+                    <span>📈</span>
+                    <h3 id="trafficRate">12.7/min</h3>
+                    <p>Traffic Rate</p>
+                </div>
+
+            </div>
+
+
+            <!-- TRAFFIC STATUS -->
+
+            <div class="traffic-status">
+
+                <p>Current Ant Traffic</p>
+
+                <h2>
+                    🔴 HIGH TRAFFIC
+                </h2>
+
+                <p>
+                    Consider taking another route.
+                    Unfortunately, you are probably much larger than the ants.
+                </p>
+
+            </div>
+
+
+            <!-- FUNNY MESSAGE -->
+
+            <div class="funny-result">
+
+                <h2>
+                    Was this information necessary?
+                </h2>
+
+                <p>
+                    Absolutely not. 😂
+                </p>
+
+                <p>
+                    But we used AI to find out anyway.
+                </p>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <footer>
+        🐜 ANT-TRAFFIC — Because even ants have traffic.
+    </footer>
+
+
+    <script>
+
+        const videoInput = document.getElementById("videoInput");
+        const videoPreview = document.getElementById("videoPreview");
+        const videoSection = document.getElementById("videoSection");
+        const fileName = document.getElementById("fileName");
+
+        const analysisCard = document.getElementById("analysisCard");
+        const results = document.getElementById("results");
+
+        const progressBar = document.getElementById("progressBar");
+        const progressText = document.getElementById("progressText");
+
+
+
+        /* VIDEO UPLOAD */
+
+        videoInput.addEventListener("change", function() {
+
+            const file = this.files[0];
+
+            if (!file) {
+                return;
+            }
+
+            fileName.textContent = "📹 " + file.name;
+
+            const videoURL = URL.createObjectURL(file);
+
+            videoPreview.src = videoURL;
+
+            videoSection.style.display = "block";
+
+            analysisCard.style.display = "none";
+
+            results.style.display = "none";
+
+        });
+
+
+
+        /* ANALYZE VIDEO */
+
+        function analyzeVideo() {
+
+            analysisCard.style.display = "block";
+
+            results.style.display = "none";
+
+            let progress = 0;
+
+            progressBar.style.width = "0%";
+
+            progressText.textContent = "0%";
+
+            const messages = [
+                "Finding ants...",
+                "Detecting tiny commuters...",
+                "Tracking ant movement...",
+                "Counting checkpoint crossings...",
+                "Calculating completely unnecessary statistics...",
+                "Almost there..."
+            ];
+
+            let messageIndex = 0;
+
+            const interval = setInterval(function() {
+
+                progress += 2;
+
+                progressBar.style.width = progress + "%";
+
+                progressText.textContent = progress + "%";
+
+                if (progress % 16 === 0 && messageIndex < messages.length) {
+
+                    document.getElementById("analysisText")
+                        .textContent = messages[messageIndex];
+
+                    messageIndex++;
+
+                }
+
+                if (progress >= 100) {
+
+                    clearInterval(interval);
+
+                    setTimeout(function() {
+
+                        analysisCard.style.display = "none";
+
+                        results.style.display = "block";
+
+                    }, 500);
+
+                }
+
+            }, 100);
+
+        }
+
+    </script>
+
+</body>
+</html>
