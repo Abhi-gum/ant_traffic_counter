@@ -52,6 +52,7 @@ We use **YOLO-based computer vision** to detect ants in the video and track them
 ## **Implementation**
 
 ### For Software
+backend: localhost
 
 #### **# Installation**
 
