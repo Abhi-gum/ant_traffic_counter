@@ -250,63 +250,190 @@
 
         /* ANALYZE VIDEO */
 
-        function analyzeVideo() {
+        async function analyzeVideo() {
 
-            analysisCard.style.display = "block";
+    const file = videoInput.files[0];
 
-            results.style.display = "none";
+    if (!file) {
 
-            let progress = 0;
+        alert("Please select a video first.");
 
-            progressBar.style.width = "0%";
+        return;
+    }
 
-            progressText.textContent = "0%";
 
-            const messages = [
-                "Finding ants...",
-                "Detecting tiny commuters...",
-                "Tracking ant movement...",
-                "Counting checkpoint crossings...",
-                "Calculating completely unnecessary statistics...",
-                "Almost there..."
-            ];
+    // Show analysis screen
 
-            let messageIndex = 0;
+    analysisCard.style.display = "block";
 
-            const interval = setInterval(function() {
+    results.style.display = "none";
 
-                progress += 2;
 
-                progressBar.style.width = progress + "%";
+    progressBar.style.width = "10%";
 
-                progressText.textContent = progress + "%";
+    progressText.textContent = "Uploading...";
 
-                if (progress % 16 === 0 && messageIndex < messages.length) {
+    document.getElementById("analysisText").textContent =
+        "Uploading your ant traffic video...";
 
-                    document.getElementById("analysisText")
-                        .textContent = messages[messageIndex];
 
-                    messageIndex++;
+    // Create form data
 
-                }
+    const formData = new FormData();
 
-                if (progress >= 100) {
+    formData.append("video", file);
 
-                    clearInterval(interval);
 
-                    setTimeout(function() {
+    try {
 
-                        analysisCard.style.display = "none";
+        progressBar.style.width = "30%";
 
-                        results.style.display = "block";
+        progressText.textContent = "30%";
 
-                    }, 500);
+        document.getElementById("analysisText").textContent =
+            "AI is detecting and tracking ants...";
 
-                }
 
-            }, 100);
+        // Send video to Python
 
+        const response = await fetch(
+            "http://127.0.0.1:5000/analyze",
+            {
+                method: "POST",
+                body: formData
+            }
+        );
+
+
+        progressBar.style.width = "70%";
+
+        progressText.textContent = "70%";
+
+        document.getElementById("analysisText").textContent =
+            "Counting checkpoint crossings...";
+
+
+        const data = await response.json();
+
+
+        if (!data.success) {
+
+            throw new Error(
+                data.error || "Analysis failed"
+            );
         }
+
+
+        // Complete progress
+
+        progressBar.style.width = "100%";
+
+        progressText.textContent = "100%";
+
+        document.getElementById("analysisText").textContent =
+            "Analysis complete!";
+
+
+        setTimeout(function() {
+
+            analysisCard.style.display = "none";
+
+            results.style.display = "block";
+
+
+            // --------------------------------
+            // REAL ANT COUNT
+            // --------------------------------
+
+            document.getElementById("antCount")
+                .textContent = data.count;
+
+
+            // --------------------------------
+            // REAL TRAFFIC RATE
+            // --------------------------------
+
+            document.getElementById("trafficRate")
+                .textContent =
+                data.traffic_rate + "/min";
+
+
+            // --------------------------------
+            // OBSERVATION TIME
+            // --------------------------------
+
+            const timeElement =
+                document.querySelector(
+                    ".result-box:nth-child(2) h3"
+                );
+
+            timeElement.textContent =
+                data.duration + " min";
+
+
+            // --------------------------------
+            // TRAFFIC STATUS
+            // --------------------------------
+
+            const statusHeading =
+                document.querySelector(
+                    ".traffic-status h2"
+                );
+
+            statusHeading.textContent =
+                data.status === "HIGH TRAFFIC"
+                    ? "🔴 HIGH TRAFFIC"
+                    : data.status === "MEDIUM TRAFFIC"
+                        ? "🟡 MEDIUM TRAFFIC"
+                        : "🟢 LOW TRAFFIC";
+
+
+            // --------------------------------
+            // STATUS DESCRIPTION
+            // --------------------------------
+
+            const statusText =
+                document.querySelector(
+                    ".traffic-status p:last-child"
+                );
+
+
+            if (data.status === "HIGH TRAFFIC") {
+
+                statusText.textContent =
+                    "That's a lot of tiny commuters. Consider taking another route.";
+
+            } else if (data.status === "MEDIUM TRAFFIC") {
+
+                statusText.textContent =
+                    "Moderate ant activity detected.";
+
+            } else {
+
+                statusText.textContent =
+                    "The ant highway is relatively quiet.";
+
+            }
+
+        }, 700);
+
+
+    } catch (error) {
+
+        console.error(error);
+
+
+        analysisCard.style.display = "none";
+
+
+        alert(
+            "Unable to analyze the video.\n\n" +
+            error.message
+        );
+
+    }
+
+}
 
     </script>
 
