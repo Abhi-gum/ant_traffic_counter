@@ -89,17 +89,15 @@ The system takes a video as input, processes each frame, detects ants, tracks th
 
 
 # Screenshots (Add at least 3)
-![Screenshot1](Add screenshot 1 here with proper name)
-*Add caption explaining what this shows*
 
-![Screenshot2](Add screenshot 2 here with proper name)
-*Add caption explaining what this shows*
+![alt text](<Screenshot (2).png>)
 
-![Screenshot3](Add screenshot 3 here with proper name)
-*Add caption explaining what this shows*
+![alt text](<Screenshot (1).png>)
+![alt text](<Screenshot (3).png>)
 
+![alt text](<Screenshot (4).png>)
 # Diagrams
-![Workflow](Add your workflow/architecture diagram here)
+https://chatgpt.com/s/m_6aa4cddb94d48191b4766b85f6a70493
 *Add caption explaining your workflow*
 
 For Hardware:
@@ -123,16 +121,15 @@ For Hardware:
 
 ### Project Demo
 # Video
-[Add your demo video link here]
-*Explain what the video demonstrates*
 
+<video controls src="Screen Recording 2026-09-12 093152.mp4" title="Title"></video>
 # Additional Demos
 [Add any extra demo materials/links]
 
 ## Team Contributions
-- [Name 1]: [Specific contributions]
-- [Name 2]: [Specific contributions]
-- [Name 3]: [Specific contributions]
+- Beegum s rahmath:software contribution
+- Adithya lekshmi ss: hardware contribyution
+
 
 ---
 Made with ❤️ at TinkerHub Useless Projects 
