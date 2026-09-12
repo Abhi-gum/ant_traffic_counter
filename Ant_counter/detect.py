@@ -3,6 +3,10 @@ import numpy as np
 import math
 import os
 
+from flask import Flask
+
+app = Flask(__name__)
+
 
 def count_ants(video_path, output_path=None):
 
@@ -395,3 +399,6 @@ def count_ants(video_path, output_path=None):
     print("--------------------------------")
 
     return total_count
+if __name__ == "__main__":
+  port = int(os.environ.get("PORT", 10000))
+  app.run(host="0.0.0.0", port=port)
