@@ -2,15 +2,13 @@ import cv2
 import numpy as np
 import math
 import os
-from flask import send_from_directory
-
-from flask import Flask
+from flask import Flask, send_from_directory, request, jsonify
+from flask_cors import CORS
 
 app = Flask(__name__)
-
+CORS(app)  # Enables CORS for all routes so Vercel can communicate with this backend
 
 def count_ants(video_path, output_path=None):
-
     LINE_X = 424
 
     MIN_AREA = 3
@@ -44,13 +42,11 @@ def count_ants(video_path, output_path=None):
     background_frames = []
 
     for index in frame_indexes:
-
         cap.set(cv2.CAP_PROP_POS_FRAMES, int(index))
 
         success, frame = cap.read()
 
         if success:
-
             gray = cv2.cvtColor(
                 frame,
                 cv2.COLOR_BGR2GRAY
@@ -74,7 +70,6 @@ def count_ants(video_path, output_path=None):
     out = None
 
     if output_path:
-
         os.makedirs(
             os.path.dirname(output_path),
             exist_ok=True
@@ -101,20 +96,15 @@ def count_ants(video_path, output_path=None):
     # Reset video
     cap.set(cv2.CAP_PROP_POS_FRAMES, 0)
 
-    frame_number = 0
-
     # --------------------------------
     # MAIN LOOP
     # --------------------------------
 
     while True:
-
         success, frame = cap.read()
 
         if not success:
             break
-
-        frame_number += 1
 
         # --------------------------------
         # GRAYSCALE
@@ -173,27 +163,14 @@ def count_ants(video_path, output_path=None):
         detections = []
 
         for contour in contours:
-
             area = cv2.contourArea(contour)
 
-            if area < MIN_AREA:
-                continue
-
-            if area > MAX_AREA:
+            if area < MIN_AREA or area > MAX_AREA:
                 continue
 
             x, y, w, h = cv2.boundingRect(contour)
 
-            if w > 25:
-                continue
-
-            if h > 20:
-                continue
-
-            if w < 2:
-                continue
-
-            if h < 2:
+            if w > 25 or h > 20 or w < 2 or h < 2:
                 continue
 
             center_x = x + w // 2
@@ -215,11 +192,9 @@ def count_ants(video_path, output_path=None):
         # --------------------------------
 
         updated_tracks = {}
-
         used_detections = set()
 
         for track_id, track in tracks.items():
-
             old_x = track["x"]
             old_y = track["y"]
 
@@ -227,7 +202,6 @@ def count_ants(video_path, output_path=None):
             best_distance = MAX_DISTANCE
 
             for i, detection in enumerate(detections):
-
                 if i in used_detections:
                     continue
 
@@ -240,12 +214,10 @@ def count_ants(video_path, output_path=None):
                 )
 
                 if distance < best_distance:
-
                     best_distance = distance
                     best_index = i
 
             if best_index is not None:
-
                 detection = detections[best_index]
 
                 new_x = detection[0]
@@ -254,7 +226,6 @@ def count_ants(video_path, output_path=None):
                 used_detections.add(best_index)
 
                 old_position = old_x
-
                 crossed = False
 
                 if old_position < LINE_X and new_x >= LINE_X:
@@ -264,31 +235,20 @@ def count_ants(video_path, output_path=None):
                     crossed = True
 
                 if crossed and not track["counted"]:
-
                     total_count += 1
-
                     track["counted"] = True
 
-                    print(
-                        "Ant counted:",
-                        total_count
-                    )
-
                 updated_tracks[track_id] = {
-
                     "x": new_x,
                     "y": new_y,
                     "missed": 0,
                     "counted": track["counted"],
                     "age": track["age"] + 1
                 }
-
             else:
-
                 track["missed"] += 1
 
                 if track["missed"] <= MAX_MISSED:
-
                     updated_tracks[track_id] = track
 
         # --------------------------------
@@ -296,7 +256,6 @@ def count_ants(video_path, output_path=None):
         # --------------------------------
 
         for i, detection in enumerate(detections):
-
             if i in used_detections:
                 continue
 
@@ -304,7 +263,6 @@ def count_ants(video_path, output_path=None):
             new_y = detection[1]
 
             updated_tracks[next_id] = {
-
                 "x": new_x,
                 "y": new_y,
                 "missed": 0,
@@ -321,14 +279,11 @@ def count_ants(video_path, output_path=None):
         # --------------------------------
 
         if out:
-
             for track_id, track in tracks.items():
-
                 x = track["x"]
                 y = track["y"]
 
                 if track["age"] >= 2:
-
                     cv2.circle(
                         frame,
                         (x, y),
@@ -347,8 +302,6 @@ def count_ants(video_path, output_path=None):
                         1
                     )
 
-            # Counting line
-
             cv2.line(
                 frame,
                 (LINE_X, 0),
@@ -366,8 +319,6 @@ def count_ants(video_path, output_path=None):
                 (0, 0, 255),
                 1
             )
-
-            # Count display
 
             cv2.rectangle(
                 frame,
@@ -394,18 +345,18 @@ def count_ants(video_path, output_path=None):
     if out:
         out.release()
 
-    print("--------------------------------")
-    print("DETECTION FINISHED")
-    print("TOTAL ANTS:", total_count)
-    print("--------------------------------")
-
     return total_count
 
 @app.route("/")
 def home():
-  # Replace 'counter.html' with 'index.html' if your file is named index.html
-  return send_from_directory(".", "counter.html")
+    return send_from_directory(".", "counter.html")
+
+# Optional API endpoint to process analysis requests cleanly if called via fetch
+@app.route("/analyze", methods=["POST"])
+def analyze_endpoint():
+    # Implement your incoming request file handling or data processing here
+    return jsonify({"status": "success", "message": "Endpoint reached successfully"})
 
 if __name__ == "__main__":
-  port = int(os.environ.get("PORT", 10000))
-  app.run(host="0.0.0.0", port=port)
+    port = int(os.environ.get("PORT", 10000))
+    app.run(host="0.0.0.0", port=port)
