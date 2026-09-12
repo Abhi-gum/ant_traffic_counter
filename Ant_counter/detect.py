@@ -2,6 +2,7 @@ import cv2
 import numpy as np
 import math
 import os
+from flask import send_from_directory
 
 from flask import Flask
 
@@ -399,6 +400,12 @@ def count_ants(video_path, output_path=None):
     print("--------------------------------")
 
     return total_count
+
+@app.route("/")
+def home():
+  # Replace 'counter.html' with 'index.html' if your file is named index.html
+  return send_from_directory(".", "counter.html")
+
 if __name__ == "__main__":
   port = int(os.environ.get("PORT", 10000))
   app.run(host="0.0.0.0", port=port)
